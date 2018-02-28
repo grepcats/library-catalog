@@ -4,11 +4,12 @@
   * Program should delete single books
   * Program should update single books
 
+* As a librarian, I want to enter multiple authors for a book, so that I can include accurate information in my catalog. (Hint: make an authors table and a books table with a many-to-many relationship.)
+  * Program should allow Librarian to add Author when they are creating the book. This should add an Author entry to the authors db table and an association in the authors_books table.
+  * Same as above, but for multiple Authors.
+  * Program should offer option to select an existing Author from a drop down list.
 
-
-As a librarian, I want to search for a book by author or title, so that I can find a book when there are a lot of books in the library.
-
-As a librarian, I want to enter multiple authors for a book, so that I can include accurate information in my catalog. (Hint: make an authors table and a books table with a many-to-many relationship.)
+* As a librarian, I want to search for a book by author or title, so that I can find a book when there are a lot of books in the library.
 
 As a patron, I want to check a book out, so that I can take it home with me.
 
