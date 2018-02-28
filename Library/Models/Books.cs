@@ -67,7 +67,7 @@ namespace Library.Models
       conn.Open();
 
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM books";
+      cmd.CommandText = @"SELECT * FROM `books`";
 
       MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
       List<Book> allBooks = new List<Book>{};

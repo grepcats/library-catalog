@@ -11,7 +11,7 @@ namespace Library.Tests
     public void Dispose()
     {
       Book.DeleteAll();
-      // Author.DeleteAll();
+      Author.DeleteAll();
     }
 
     public AuthorTest()
@@ -37,6 +37,59 @@ namespace Library.Tests
       Assert.AreEqual(resultFirstName, testFirstName);
       Assert.AreEqual(resultLastName, testLastName);
       Assert.AreEqual(resultId, testId);
+    }
+
+
+    [TestMethod]
+    public void GetAll_DatebaseEmptyAtFirst_0()
+    {
+      //arrange, act
+      int result = Author.GetAll().Count;
+
+      //assert
+      Assert.AreEqual(0, result);
+    }
+
+    [TestMethod]
+    public void Equals_ReturnsTrueIfAllSame_Book()
+    {
+      //arrange, act
+      Author firstAuthor = new Author("Kayla", "Ondracek");
+      Author secondAuthor = new Author("Kayla", "Ondracek");
+
+      //assert
+      Assert.AreEqual(firstAuthor, secondAuthor);
+    }
+
+    [TestMethod]
+    public void Save_SaveAuthorToDatabase_AuthorList()
+    {
+      //arrange
+      Author testAuthor = new Author("Kayla", "Ondracek");
+
+      //act
+      testAuthor.Save();
+      List<Author> result = Author.GetAll();
+      List<Author> testList = new List<Author>{testAuthor};
+
+      //assert
+      CollectionAssert.AreEqual(result, testList);
+    }
+
+    [TestMethod]
+    public void Save_AssignedIdToObject_Id()
+    {
+      //arrange
+      Author testAuthor = new Author("Kayla", "Ondracek");
+
+      //act
+      testAuthor.Save();
+      Author savedAuthor = Author.GetAll()[0];
+      int result = savedAuthor.GetId();
+      int testId = testAuthor.GetId();
+
+      //assert
+      Assert.AreEqual(result, testId);
     }
 
 
