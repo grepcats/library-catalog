@@ -19,6 +19,8 @@ namespace Library.Models
 
     public int GetId() { return _id; }
 
+    public void SetTitle(string newTitle) { _title = newTitle; }
+
     public static void DeleteAll()
     {
       MySqlConnection conn = DB.Connection();
@@ -154,6 +156,13 @@ namespace Library.Models
       }
 
       return foundBook;
+    }
+
+    public void Update(string title)
+    {
+      //find book by id
+      //set title
+      //the end
     }
 
   }

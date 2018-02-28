@@ -19,7 +19,7 @@ namespace Library.Tests
     }
 
     [TestMethod]
-    public void GetTitle_FetchTitle_String()
+    public void Getters_FetchElements_StringInt()
     {
       //arrange
       Book testBook = new Book("Consider Phlebas");
@@ -33,6 +33,20 @@ namespace Library.Tests
       //assert
       Assert.AreEqual(testTitle, resultTitle);
       Assert.AreEqual(testId, resultId);
+    }
+
+    [TestMethod]
+    public void SetTitle_SetTheTitle_Void()
+    {
+      //arrange
+      Book newBook = new Book("Consider Phlebs");
+      string newTitle = "Consider Phlebas";
+
+      //act
+      newBook.SetTitle(newTitle);
+
+      //assert
+      Assert.AreEqual(newTitle, newBook.GetTitle());
     }
 
     [TestMethod]
