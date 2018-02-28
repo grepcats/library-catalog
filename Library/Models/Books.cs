@@ -183,7 +183,74 @@ namespace Library.Models
       {
         conn.Dispose();
       }
+    }
 
+
+
+    public void AddAuthor(Author author)
+    {
+
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO books_authors ( author_id, book_id) VALUES (@AuthorId, @BookId);";
+
+      MySqlParameter book_id = new MySqlParameter();
+      book_id.ParameterName = "@BookId";
+      book_id.Value = this._id;
+      cmd.Parameters.Add(book_id);
+
+      MySqlParameter author_id = new MySqlParameter();
+      author_id.ParameterName = "@AuthorId";
+      author_id.Value = author.GetId();
+      cmd.Parameters.Add(author_id);
+
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+       conn.Dispose();
+      }
+
+      if (!(Author.CheckDuplicate(author)))
+      {
+        author.Save();
+      }
+    }
+
+    public List<Author> GetAuthors()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT authors.* FROM books
+        JOIN books_authors ON (books.id = books_authors.book_id)
+        JOIN authors ON (books_authors.author_id = authors.id)
+        WHERE books.id = @BookId;";
+
+      MySqlParameter bookIdParameter = new MySqlParameter();
+      bookIdParameter.ParameterName = "@BookId";
+      bookIdParameter.Value = this._id;
+      cmd.Parameters.Add(bookIdParameter);
+
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      List<Author> authors = new List<Author>{};
+
+      while(rdr.Read())
+      {
+        int authorId = rdr.GetInt32(0);
+        string firstName = rdr.GetString(1);
+        string lastName = rdr.GetString(2);
+        Author newAuthor = new Author(firstName, lastName, authorId);
+        authors.Add(newAuthor);
+      }
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return authors;
     }
 
   }

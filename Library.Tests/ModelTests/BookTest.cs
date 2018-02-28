@@ -150,5 +150,29 @@ namespace Library.Tests
       //Assert
       Assert.AreEqual(secondTitle, result);
     }
+
+    [TestMethod]
+    public void AddAuthor_AddAuthorToBook_AuthorList()
+    {
+      //arrange
+      Book testBook = new Book("Consider Phlebas");
+      testBook.Save();
+
+      Author testAuthor1 = new Author("Kayla", "Ondrcek");
+      testAuthor1.Save();
+
+      Author testAuthor2 = new Author("Iain", "Banks");
+      testAuthor2.Save();
+
+      //act
+      testBook.AddAuthor(testAuthor1);
+      List<Author> savedAuthors = testBook.GetAuthors();
+      List<Author> testAuthorList = new List<Author>{testAuthor1};
+
+      //assert
+      CollectionAssert.AreEqual(testAuthorList, savedAuthors);
+
+
+    }
   }
 }

@@ -111,5 +111,18 @@ namespace Library.Models
       return this.GetFirstName().GetHashCode();
     }
 
+    public static bool CheckDuplicate(Author checkAuthor)
+    {
+      List<Author> allAuthors = Author.GetAll();
+      foreach (Author author in allAuthors)
+      {
+        if (author.GetFirstName() == checkAuthor.GetFirstName() && author.GetLastName() == checkAuthor.GetLastName())
+        {
+          return true;
+        }
+      }
+      return false;
+    }
+
   }
 }

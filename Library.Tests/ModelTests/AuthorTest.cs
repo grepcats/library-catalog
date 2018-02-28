@@ -92,6 +92,23 @@ namespace Library.Tests
       Assert.AreEqual(result, testId);
     }
 
+    [TestMethod]
+    public void CheckDuplicateAuthor_CheckDuplicateAuthorInDB_True()
+    {
+      //arrange
+      List<Author> allAuthors = Author.GetAll();
+      Author newAuthor = new Author("Kayla", "Ondracek");
+      newAuthor.Save();
+
+      Author newAuthor2 = new Author("Kayla", "Ondracek");
+
+      //act
+      bool isAuthorDuplicate = Author.CheckDuplicate(newAuthor2);
+
+      //assert
+      Assert.AreEqual(isAuthorDuplicate, true);
+    }
+
 
   }
 }
