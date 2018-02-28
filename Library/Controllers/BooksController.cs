@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Library.Models;
+using System;
 
 namespace Library.Controllers
 {
@@ -78,6 +79,16 @@ namespace Library.Controllers
       foundBook.AddAuthor(newAuthor);
 
       return RedirectToAction("Details", new {Id = id});
+
+    }
+
+    [HttpPost("/books/search")]
+    public ActionResult Search()
+    {
+      string searchTerm = Request.Form["search-input"];
+      List<Book> filteredBooks = Book.SearchBooks(searchTerm);
+
+      return View("Index", filteredBooks);
 
     }
   }

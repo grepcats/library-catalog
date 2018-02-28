@@ -4,6 +4,13 @@
 
 <h2>Books</h2>
 <a href="/books/new">Add book to catalog</a>
+<div>
+  <form method="post" action="/books/search">
+    <label for="search-input">Search Books</label>
+    <input type="text" name="search-input" class="form-control">
+    <button type="submit" class="btn btn-danger">Search</button>
+  </form>
+</div>
 @if (@Model.Count > 0)
 {
 
@@ -12,6 +19,7 @@
     <thead>
       <tr>
         <th>Book Title</th>
+        <th>Author(s)</th>
         <th>View Details</th>
         <th>Delete</th>
         <th>Update</th>
@@ -22,6 +30,11 @@
       {
         <tr>
           <td>@book.GetTitle()</td>
+          <td>@foreach(var author in book.GetAuthors())
+            {
+              <p>@author.GetFirstName() @author.GetLastName()</p>
+            }
+          </td>
           <td><a href="/books/@book.GetId()/details">Details</a></td>
           <td><a href="/books/@book.GetId()/delete"><span class="glyphicon glyphicon-remove"></span></a></td>
           <td><a href="/books/@book.GetId()/update">Update</a></td>

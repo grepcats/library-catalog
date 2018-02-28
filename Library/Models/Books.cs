@@ -248,5 +248,33 @@ namespace Library.Models
       return authors;
     }
 
+    public static List<Book> SearchBooks(string search)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT DISTINCT books.* FROM books
+        JOIN books_authors ON (books.id = books_authors.book_id)
+        JOIN authors ON (books_authors.author_id = authors.id)
+        WHERE books.title LIKE @SearchTerm;";
+
+      MySqlParameter searchTerm = new MySqlParameter();
+      searchTerm.ParameterName = "@SearchTerm";
+      searchTerm.Value = '%' + search + '%';
+      cmd.Parameters.Add(searchTerm);
+
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      List<Book> filteredBooks = new List<Book>{};
+
+      while(rdr.Read())
+      {
+        int bookId = rdr.GetInt32(0);
+        string bookTitle = rdr.GetString(1);
+        Book book = new Book(bookTitle, bookId);
+        filteredBooks.Add(book);
+      }
+      return filteredBooks;
+    }
+
   }
 }
