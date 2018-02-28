@@ -35,5 +35,19 @@ namespace Library.Tests
       //assert
       Assert.IsInstanceOfType(result, typeof(List<Book>));
     }
+
+    [TestMethod]
+    public void CreateForm_ReturnIfTrue_View()
+    {
+      //arrange
+      BooksController controller = new BooksController();
+
+      //act
+      IActionResult createFormView = controller.Index();
+      ViewResult result = createFormView as ViewResult;
+
+      //assert
+      Assert.IsInstanceOfType(result, typeof(ViewResult));
+    }
   }
 }

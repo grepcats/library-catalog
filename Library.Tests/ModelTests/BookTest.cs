@@ -86,5 +86,23 @@ namespace Library.Tests
       //assert
       Assert.AreEqual(firstBook, secondBook);
     }
+
+    [TestMethod]
+    public void Delete_RemovesBookFromDB_Void()
+    {
+      //arrange
+      Book testBook1 = new Book("Consider Phlebas");
+      testBook1.Save();
+      List<Book> originalList = Book.GetAll();
+      Book testBook2 = new Book("Player of Games");
+      testBook2.Save();
+
+      //act
+      testBook2.Delete();
+      List<Book> newList = Book.GetAll();
+
+      //assert
+      CollectionAssert.AreEqual(originalList, newList);
+    }
   }
 }
