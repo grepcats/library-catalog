@@ -34,5 +34,20 @@ namespace Library.Controllers
       foundBook.Delete();
       return RedirectToAction("Index");
     }
+
+    [HttpGet("/books/{id}/update")]
+    public ActionResult CreateUpdateForm(int id)
+    {
+      Book foundBook = Book.Find(id);
+      return View("CreateUpdateForm", foundBook);
+    }
+
+    [HttpPost("/books/{id}/update")]
+    public ActionResult UpdateBook(int id)
+    {
+      Book foundBook = Book.Find(id);
+      foundBook.Update(Request.Form["book-title"]);
+      return RedirectToAction("Index");
+    }
   }
 }
