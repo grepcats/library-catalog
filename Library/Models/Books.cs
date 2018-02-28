@@ -211,11 +211,6 @@ namespace Library.Models
       {
        conn.Dispose();
       }
-
-      if (!(Author.CheckDuplicate(author)))
-      {
-        author.Save();
-      }
     }
 
     public List<Author> GetAuthors()

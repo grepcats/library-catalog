@@ -23,6 +23,8 @@ namespace Library.Models
 
     public int GetId() { return _id; }
 
+    public void SetId(int id) { _id = id; }
+
     public static void DeleteAll()
     {
       MySqlConnection conn = DB.Connection();
@@ -111,17 +113,24 @@ namespace Library.Models
       return this.GetFirstName().GetHashCode();
     }
 
-    public static bool CheckDuplicate(Author checkAuthor)
+    public static Author CheckDuplicate(Author checkAuthor)
     {
       List<Author> allAuthors = Author.GetAll();
+      bool isInDB = false;
       foreach (Author author in allAuthors)
       {
         if (author.GetFirstName() == checkAuthor.GetFirstName() && author.GetLastName() == checkAuthor.GetLastName())
         {
-          return true;
+          isInDB = true;
+          checkAuthor.SetId(author.GetId());
         }
       }
-      return false;
+
+      if (!isInDB)
+      {
+        checkAuthor.Save();
+      }
+      return checkAuthor;
     }
 
   }

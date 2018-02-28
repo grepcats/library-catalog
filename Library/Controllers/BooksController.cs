@@ -25,6 +25,7 @@ namespace Library.Controllers
       Book newBook = new Book(Request.Form["book-title"]);
       Author newAuthor = new Author(Request.Form["author-first"], Request.Form["author-last"]);
       newBook.Save();
+      Author.CheckDuplicate(newAuthor);
       newBook.AddAuthor(newAuthor);
       return RedirectToAction("Index");
     }
