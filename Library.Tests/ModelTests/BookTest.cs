@@ -132,5 +132,22 @@ namespace Library.Tests
       //Assert
       Assert.AreEqual(testBook, foundBook);
     }
+
+    [TestMethod]
+    public void Update_UpdatesBookInDatabase_String()
+    {
+      //arrange
+      string firstTitle = "Consider";
+      Book testBook = new Book(firstTitle);
+      testBook.Save();
+      string secondTitle = "Consider Phlebas";
+
+      //act
+      testBook.Update(secondTitle);
+      string result = Book.Find(testBook.GetId()).GetTitle();
+
+      //Assert
+      Assert.AreEqual(secondTitle, result);
+    }
   }
 }

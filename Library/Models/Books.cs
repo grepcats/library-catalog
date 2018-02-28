@@ -160,9 +160,30 @@ namespace Library.Models
 
     public void Update(string title)
     {
-      //find book by id
-      //set title
-      //the end
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE books SET title = @NewTitle WHERE id = @BookId;";
+
+      MySqlParameter newTitle = new MySqlParameter();
+      newTitle.ParameterName = "@NewTitle";
+      newTitle.Value = title;
+      cmd.Parameters.Add(newTitle);
+
+      MySqlParameter bookId = new MySqlParameter();
+      bookId.ParameterName = "@BookId";
+      bookId.Value = this._id;
+      cmd.Parameters.Add(bookId);
+
+      cmd.ExecuteNonQuery();
+      _title = title;
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+
     }
 
   }
