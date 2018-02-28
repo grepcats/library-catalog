@@ -104,5 +104,19 @@ namespace Library.Tests
       //assert
       CollectionAssert.AreEqual(originalList, newList);
     }
+
+    [TestMethod]
+    public void Find_FindBookInDB_Book()
+    {
+      //arrange
+      Book testBook = new Book("Consider Phlebas");
+      testBook.Save();
+
+      //act
+      Book foundBook = Book.Find(testBook.GetId());
+
+      //Assert
+      Assert.AreEqual(testBook, foundBook);
+    }
   }
 }

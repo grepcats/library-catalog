@@ -122,5 +122,39 @@ namespace Library.Models
       }
     }
 
+    public static Book Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * from `books` WHERE id = @thisId;";
+
+      MySqlParameter thisId = new MySqlParameter();
+      thisId.ParameterName = "@thisId";
+      thisId.Value = id;
+      cmd.Parameters.Add(thisId);
+
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int bookId = 0;
+      string bookTitle = "";
+
+      while (rdr.Read())
+      {
+        bookId = rdr.GetInt32(0);
+        bookTitle = rdr.GetString(1);
+      }
+
+      Book foundBook = new Book(bookTitle, bookId);
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+
+      return foundBook;
+    }
+
   }
 }

@@ -26,5 +26,11 @@ namespace Library.Controllers
       newBook.Save();
       return RedirectToAction("Index");
     }
+
+    // [HttpGet("/books/{id}/delete")]
+    // public ActionResult DeleteBook()
+    // {
+    //
+    // }
   }
 }
