@@ -23,10 +23,7 @@ namespace Library.Controllers
     public ActionResult CreateNewBook()
     {
       Book newBook = new Book(Request.Form["book-title"]);
-      Author newAuthor = new Author(Request.Form["author-first"], Request.Form["author-last"]);
       newBook.Save();
-      Author.CheckDuplicate(newAuthor);
-      newBook.AddAuthor(newAuthor);
       return RedirectToAction("Index");
     }
 
@@ -51,6 +48,37 @@ namespace Library.Controllers
       Book foundBook = Book.Find(id);
       foundBook.Update(Request.Form["book-title"]);
       return RedirectToAction("Index");
+    }
+
+    [HttpGet("/books/{id}/details")]
+    public ActionResult Details(int id)
+    {
+      Book foundBook = Book.Find(id);
+      List<Author> authors = foundBook.GetAuthors();
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      model.Add("book", foundBook);
+      model.Add("authors", authors);
+
+      return View("Details", model);
+    }
+
+    [HttpGet("/books/{id}/authors/new")]
+    public ActionResult CreateAuthorForm(int id)
+    {
+      Book foundBook = Book.Find(id);
+      return View("CreateAuthorForm", foundBook);
+    }
+
+    [HttpPost("/books/{id}/authors/new")]
+    public ActionResult CreateAuthor(int id)
+    {
+      Book foundBook = Book.Find(id);
+      Author newAuthor = new Author(Request.Form["author-first"], Request.Form["author-last"]);
+      Author.CheckDuplicate(newAuthor);
+      foundBook.AddAuthor(newAuthor);
+
+      return RedirectToAction("Details", new {Id = id});
+
     }
   }
 }

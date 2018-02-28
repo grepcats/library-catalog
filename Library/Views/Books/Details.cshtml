@@ -1,0 +1,14 @@
+@{
+  Layout = "_Layout";
+}
+
+<h2>Details for @Model["book"].GetTitle()</h2>
+
+<h3>Authors</h3>
+@foreach (var author in @Model["authors"])
+{
+  <p>@author.GetFirstName() @author.GetLastName()</p>
+}
+
+<a href='/books/@Model["book"].GetId()/authors/new'>Add new author</a>
+<a href='/'>Do a E.T.</a>
