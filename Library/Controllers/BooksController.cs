@@ -27,10 +27,12 @@ namespace Library.Controllers
       return RedirectToAction("Index");
     }
 
-    // [HttpGet("/books/{id}/delete")]
-    // public ActionResult DeleteBook()
-    // {
-    //
-    // }
+    [HttpGet("/books/{id}/delete")]
+    public ActionResult DeleteBook(int id)
+    {
+      Book foundBook = Book.Find(id);
+      foundBook.Delete();
+      return RedirectToAction("Index");
+    }
   }
 }

@@ -12,6 +12,7 @@
     <thead>
       <tr>
         <th>Book Title</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
       {
         <tr>
           <td>@book.GetTitle()</td>
+          <td><a href="/books/@book.GetId()/delete">Delete</a></td>
         </tr>
       }
     </tbody>
