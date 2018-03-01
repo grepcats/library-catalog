@@ -321,7 +321,7 @@ namespace Library.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM copies WHERE book_id = @BookId;";
+      cmd.CommandText = @"SELECT * FROM copies WHERE book_id = @BookId AND checked_out = 0;";
 
       MySqlParameter bookId = new MySqlParameter();
       bookId.ParameterName = "@BookId";

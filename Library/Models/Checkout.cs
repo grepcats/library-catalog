@@ -40,7 +40,7 @@ namespace Library.Models
       conn.Open();
 
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM copies WHERE book_id = @BookId LIMIT 1;";
+      cmd.CommandText = @"SELECT * FROM copies WHERE book_id = @BookId AND checked_out = 0 LIMIT 1;";
 
       MySqlParameter bookIdParameter = new MySqlParameter();
       bookIdParameter.ParameterName = "@BookId";
@@ -70,6 +70,7 @@ namespace Library.Models
 
     public void DoCheckout()
     {
+      //TODO add functionality that updates copies table "checkedout" value
       MySqlConnection conn = DB.Connection();
       conn.Open();
 
@@ -102,7 +103,11 @@ namespace Library.Models
       cmd.Parameters.Add(checkedOut);
 
       cmd.ExecuteNonQuery();
-      _id = (int) cmd.LastInsertedId;
+
+      var cmd2 = conn.CreateCommand() as MySqlCommand;
+      cmd2.CommandText = @"UPDATE copies SET checked_out = 1 WHERE id = @CopyId;";
+      cmd2.Parameters.Add(copyId);
+      cmd2.ExecuteNonQuery();
 
       conn.Close();
       if (conn != null)
