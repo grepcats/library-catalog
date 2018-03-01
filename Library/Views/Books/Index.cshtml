@@ -22,6 +22,7 @@
         <th>Author(s)</th>
         <th>View Details</th>
         <th>Delete</th>
+        <th>Available Copies</th>
         <th>Update</th>
       </tr>
     </thead>
@@ -37,6 +38,7 @@
           </td>
           <td><a href="/books/@book.GetId()/details">Details</a></td>
           <td><a href="/books/@book.GetId()/delete"><span class="glyphicon glyphicon-remove"></span></a></td>
+          <td>@book.ReturnCount() &nbsp;<a href="/books/@book.GetId()/add"><span class="glyphicon glyphicon-plus"></span></a></td>
           <td><a href="/books/@book.GetId()/update">Update</a></td>
         </tr>
       }

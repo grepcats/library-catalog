@@ -91,5 +91,14 @@ namespace Library.Controllers
       return View("Index", filteredBooks);
 
     }
+
+    [HttpGet("/books/{id}/add")]
+    public ActionResult AddBookCopy(int id)
+    {
+      Book foundBook = Book.Find(id);
+      foundBook.AddCopy();
+
+      return RedirectToAction("Index");
+    }
   }
 }

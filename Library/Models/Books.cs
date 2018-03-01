@@ -276,5 +276,48 @@ namespace Library.Models
       return filteredBooks;
     }
 
+    public void AddCopy()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO copies (book_id) VALUES (@BookId);";
+
+      MySqlParameter book_id = new MySqlParameter();
+      book_id.ParameterName = "@BookId";
+      book_id.Value = this._id;
+      cmd.Parameters.Add(book_id);
+
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+       conn.Dispose();
+      }
+
+    }
+
+    public int ReturnCount()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM copies WHERE book_id = @BookId;";
+
+      MySqlParameter bookId = new MySqlParameter();
+      bookId.ParameterName = "@BookId";
+      bookId.Value = this._id;
+      cmd.Parameters.Add(bookId);
+
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int count = 0;
+
+      while(rdr.Read())
+      {
+        count++;
+      }
+      return count;
+    }
+
   }
 }
