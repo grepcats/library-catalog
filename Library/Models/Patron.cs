@@ -46,6 +46,11 @@ namespace Library.Models
       return _email;
     }
 
+    public override int GetHashCode()
+    {
+      return this.GetFirstName().GetHashCode();
+    }
+
     public static List<Patron> GetAll()
     {
       MySqlConnection conn = DB.Connection();

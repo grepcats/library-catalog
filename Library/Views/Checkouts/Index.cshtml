@@ -1,0 +1,26 @@
+@{
+  Layout = "_Layout";
+}
+
+<h2>Checkout a book</h2>
+<form method="post" action="/checkouts/new">
+  <div class="form-group">
+    <select name="patron" class="form-control">
+      @foreach(var patron in @Model["patrons"])
+      {
+        <option value="@patron.GetId()">@patron.GetFirstName() @patron.GetLastName()</option>
+      }
+    </select>
+  </div>
+  <div class="form-group">
+    <select name="book" class="form-control">
+      @foreach(var book in @Model["books"])
+      {
+        <option value="@book.GetId()">@book.GetTitle()</option>
+      }
+    </select>
+  </div>
+  <h3>Date Checkout: @DateTime.Today.ToString("MM/dd/yyyy")</h3>
+  <h3>Date Due: @DateTime.Today.AddDays(14).ToString("MM/dd/yyyy")</h3>
+  <button type="submit" class="btn btn-default">Checkout</button>
+</form>

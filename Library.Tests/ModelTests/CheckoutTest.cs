@@ -23,7 +23,19 @@ namespace Library.Tests
     [TestMethod]
     public void Getters_FetchElements_StringInt()
     {
-      Checkout newCheckout = new Checkout("1/18/2017 12:00:00 AM")
+      DateTime testCheckoutDate = DateTime.Parse("2009-01-01");
+      DateTime testDueDate = testCheckoutDate.AddDays(14);
+      int testId = 0;
+      int testPatronId = 0;
+      int testCopyId = 0;
+
+      Checkout newCheckout = new Checkout(testCheckoutDate, testDueDate);
+
+      Assert.AreEqual(testCheckoutDate, newCheckout.GetCheckout());
+      Assert.AreEqual(testDueDate, newCheckout.GetDueDate());
+      Assert.AreEqual(0, newCheckout.GetId());
+      Assert.AreEqual(0, newCheckout.GetPatronId());
+      Assert.AreEqual(0, newCheckout.GetCopyId());
     }
   }
 }
