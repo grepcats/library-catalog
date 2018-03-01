@@ -72,5 +72,31 @@ namespace Library.Tests
       CollectionAssert.AreEqual(result, testList);
 
     }
+
+    [TestMethod]
+    public void GetCheckedOutBooks_FetchBooksFromDB_ListBooks()
+    {
+      //arrange
+      DateTime testCheckoutDate = DateTime.Parse("2009-01-01");
+      DateTime testDueDate = testCheckoutDate.AddDays(14);
+      Patron newPatron = new Patron("Kayla", "Ondracek", "kayla@kayla.com");
+      newPatron.Save();
+      Book newBook = new Book("Consider Phlebas");
+      newBook.Save();
+      newBook.AddCopy();
+      Book newBook2 = new Book("A Player of Games");
+      newBook2.Save();
+      newBook2.AddCopy();
+      Checkout newCheckout = new Checkout(testCheckoutDate, testDueDate, 0, 0, newPatron.GetId(), true);
+      int copyId = newCheckout.FindCopyId(newBook.GetId());
+      newCheckout.SetCopyId(copyId);
+      List<Book> controlList = new List<Book>{newBook};
+
+      //Act
+      List<Book> testList = newPatron.GetCheckedOutBooks();
+
+      //assert
+      CollectionAssert.AreEqual(testList, controlList);
+    }
   }
 }

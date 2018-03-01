@@ -25,9 +25,10 @@ namespace Library.Controllers
       DateTime dueDate = checkoutDate.AddDays(14);
       int patronId = Int32.Parse(Request.Form["patron"]);
       int bookId = Int32.Parse(Request.Form["book"]);
-      Checkout newCheckout = new Checkout(checkoutDate, dueDate, 0, 0, patronId, true);
+      Book foundBook = Book.Find(bookId);
+
+      Checkout newCheckout = new Checkout(checkoutDate, dueDate, foundBook.GetTitle(), 0, 0, patronId, true);
       int copyId = newCheckout.FindCopyId(bookId);
-      Console.WriteLine(copyId);
       newCheckout.SetCopyId(copyId);
       newCheckout.DoCheckout();
 

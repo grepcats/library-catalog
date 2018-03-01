@@ -20,8 +20,7 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Email</th>
-        <th>Fines</th>
+        <th>Details</th>
       </tr>
     </thead>
     <tbody>
@@ -29,8 +28,7 @@
       {
         <tr>
           <td>@patron.GetFirstName() @patron.GetLastName()</td>
-          <td>@patron.GetEmail()</td>
-          <td>@patron.GetFines()</td>
+          <td><a href="/patrons/@patron.GetId()/details">Details</a></td>
         </tr>
       }
     </tbody>

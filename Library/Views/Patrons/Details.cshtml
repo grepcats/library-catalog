@@ -1,0 +1,26 @@
+@{
+  Layout = "_Layout";
+}
+
+<h2>Details for @Model["patron"].GetFirstName() @Model["patron"].GetLastName()</h2>
+
+<h3>Checked out books</h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Book Title</th>
+      <th>Date Checked out</th>
+      <th>Date Due</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach(var checkout in @Model["books"])
+    {
+      <tr>
+        <td>@checkout.GetBookName()</td>
+        <td>@checkout.GetCheckout()</td>
+        <td>@checkout.GetDueDate()</td>
+      </tr>
+    }
+  </tbody>
+</table>

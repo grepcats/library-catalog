@@ -27,5 +27,17 @@ namespace Library.Controllers
       newPatron.Save();
       return RedirectToAction("Index", "patrons");
     }
+
+    [HttpGet("/patrons/{id}/details")]
+    public ActionResult Details(int id)
+    {
+      Dictionary<string, object> model = new Dictionary<string,object>();
+      Patron foundPatron = Patron.Find(id);
+      List<Checkout> books = foundPatron.GetCheckedOutBooks();
+      model.Add("patron", foundPatron);
+      model.Add("books", books);
+
+      return View("Details", model);
+    }
   }
 }

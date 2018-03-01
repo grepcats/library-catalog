@@ -8,16 +8,18 @@ namespace Library.Models
   {
     private int _id;
     private int _copyId;
+    private string _bookName;
     private int _patronId;
     private DateTime _checkoutDate;
     private DateTime _dueDate;
     private bool _checkedOut;
 
 
-    public Checkout(DateTime checkoutDate, DateTime dueDate, int Id = 0, int copyId = 0, int patronId = 0, bool checkedOut = true)
+    public Checkout(DateTime checkoutDate, DateTime dueDate, string bookName, int Id = 0, int copyId = 0, int patronId = 0, bool checkedOut = true)
     {
       _checkoutDate = checkoutDate;
       _dueDate = dueDate;
+      _bookName = bookName;
       _id = Id;
       _copyId = copyId;
       _patronId = patronId;
@@ -29,6 +31,8 @@ namespace Library.Models
     public DateTime GetDueDate() { return _dueDate;}
 
     public int GetId() { return _id; }
+
+    public string GetBookName() { return _bookName; }
 
     public int GetPatronId() { return _patronId; }
 
@@ -54,13 +58,13 @@ namespace Library.Models
         foundCopyId = rdr.GetInt32(0);
       }
 
-      return foundCopyId;
-
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
+
+      return foundCopyId;
     }
 
     public void SetCopyId(int copyId)
@@ -75,7 +79,7 @@ namespace Library.Models
       conn.Open();
 
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO `checkouts` (`patron_id`, `copy_id`, `date_checked`, `date_due`, `returned`) VALUES (@PatronId, @CopyId, @DateCheckout, @DateDue, @CheckedOut);";
+      cmd.CommandText = @"INSERT INTO `checkouts` (`patron_id`, `copy_id`, `date_checked`, `date_due`, `checked_out`) VALUES (@PatronId, @CopyId, @DateCheckout, @DateDue, @CheckedOut);";
 
       MySqlParameter patronId = new MySqlParameter();
       patronId.ParameterName = "@PatronId";

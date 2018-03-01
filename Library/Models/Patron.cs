@@ -148,7 +148,7 @@ namespace Library.Models
       conn.Open();
 
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * from `patron` WHERE id = @thisId;";
+      cmd.CommandText = @"SELECT * from `patrons` WHERE id = @thisId;";
 
       MySqlParameter thisId = new MySqlParameter();
       thisId.ParameterName = "@thisId";
@@ -180,6 +180,46 @@ namespace Library.Models
       }
 
       return foundPatron;
+    }
+
+    public List<Checkout> GetCheckedOutBooks()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT checkouts.id, books.title, checkouts.date_checked, checkouts.date_due FROM copies
+      JOIN books ON (copies.book_id = books.id)
+      JOIN checkouts ON (checkouts.copy_id = copies.id)
+      WHERE checkouts.patron_id = @PatronId AND checkouts.checked_out = 1;";
+
+      MySqlParameter patronId = new MySqlParameter();
+      patronId.ParameterName = "@PatronId";
+      patronId.Value = this._id;
+      cmd.Parameters.Add(patronId);
+
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+      List<Checkout> checkouts = new List<Checkout>{};
+      while (rdr.Read())
+      {
+        int checkoutId = rdr.GetInt32(0);
+        string checkoutTitle = rdr.GetString(1);
+        DateTime checkoutDateChecked = rdr.GetDateTime(2);
+        DateTime checkoutDateDue = rdr.GetDateTime(3);
+
+        Checkout newCheckout = new Checkout(checkoutDateChecked, checkoutDateDue, checkoutTitle, checkoutId, 0, 0, true);
+
+        checkouts.Add(newCheckout);
+      }
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+
+      return checkouts;
     }
   }
 }
