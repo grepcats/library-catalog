@@ -12,6 +12,7 @@ namespace Library.Tests
     {
       Book.DeleteAll();
       Author.DeleteAll();
+      Patron.DeleteAll();
     }
 
     public AuthorTest()
