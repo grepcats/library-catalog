@@ -24,6 +24,7 @@
         <th>View Details</th>
         <th>Delete</th>
         <th>Total Copies</th>
+        <th>Total Available Copies</th>
         <th>Update</th>
       </tr>
     </thead>
@@ -40,7 +41,9 @@
           <td><a href="/books/@book.GetId()/details">Details</a></td>
           <td><a href="/books/@book.GetId()/delete"><span class="glyphicon glyphicon-remove"></span></a></td>
 
-          <td>@book.ReturnCount() &nbsp;<a href="/books/@book.GetId()/add"><span class="glyphicon glyphicon-plus"></span></a>&nbsp;<a href="/books/@book.GetId()/burn"><span class="glyphicon glyphicon-fire"></span></a></td>
+          <td>@book.ReturnTotalCount() &nbsp;<a href="/books/@book.GetId()/add"><span class="glyphicon glyphicon-plus"></span></a>&nbsp;<a href="/books/@book.GetId()/burn"><span class="glyphicon glyphicon-fire"></span></a></td>
+
+          <td>@book.ReturnAvailableCount()</td>
 
           <td><a href="/books/@book.GetId()/update">Update</a></td>
         </tr>

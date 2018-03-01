@@ -141,5 +141,45 @@ namespace Library.Models
         conn.Dispose();
       }
     }
+
+    public static Patron Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * from `patron` WHERE id = @thisId;";
+
+      MySqlParameter thisId = new MySqlParameter();
+      thisId.ParameterName = "@thisId";
+      thisId.Value = id;
+      cmd.Parameters.Add(thisId);
+
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int patronId = 0;
+      string patronFirstName = "";
+      string patronLastName = "";
+      string patronEmail = "";
+      int patronFines = 0;
+
+      while (rdr.Read())
+      {
+        patronId = rdr.GetInt32(0);
+        patronFirstName = rdr.GetString(1);
+        patronLastName = rdr.GetString(2);
+        patronEmail = rdr.GetString(3);
+        patronFines = rdr.GetInt32(4);
+      }
+
+      Patron foundPatron = new Patron(patronFirstName, patronLastName, patronEmail, patronFines, patronId);
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+
+      return foundPatron;
+    }
   }
 }

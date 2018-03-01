@@ -316,7 +316,29 @@ namespace Library.Models
 
     }
 
-    public int ReturnCount()
+    public int ReturnTotalCount()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM copies WHERE book_id = @BookId;";
+
+      MySqlParameter bookId = new MySqlParameter();
+      bookId.ParameterName = "@BookId";
+      bookId.Value = this._id;
+      cmd.Parameters.Add(bookId);
+
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int count = 0;
+
+      while(rdr.Read())
+      {
+        count++;
+      }
+      return count;
+    }
+
+    public int ReturnAvailableCount()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
