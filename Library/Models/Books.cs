@@ -185,8 +185,6 @@ namespace Library.Models
       }
     }
 
-
-
     public void AddAuthor(Author author)
     {
 

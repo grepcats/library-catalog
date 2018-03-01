@@ -11,17 +11,17 @@ namespace Library.Models
     private int _patronId;
     private DateTime _checkoutDate;
     private DateTime _dueDate;
-    private bool _returned;
+    private bool _checkedOut;
 
 
-    public Checkout(DateTime checkoutDate, DateTime dueDate, int Id = 0, int copyId = 0, int patronId = 0, bool returned = false)
+    public Checkout(DateTime checkoutDate, DateTime dueDate, int Id = 0, int copyId = 0, int patronId = 0, bool checkedOut = true)
     {
       _checkoutDate = checkoutDate;
       _dueDate = dueDate;
       _id = Id;
       _copyId = copyId;
       _patronId = patronId;
-      _returned = returned;
+      _checkedOut = checkedOut;
     }
 
     public DateTime GetCheckout() { return _checkoutDate;}
@@ -34,13 +34,47 @@ namespace Library.Models
 
     public int GetCopyId() { return _copyId; }
 
+    public int FindCopyId(int bookId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM copies WHERE book_id = @BookId LIMIT 1;";
+
+      MySqlParameter bookIdParameter = new MySqlParameter();
+      bookIdParameter.ParameterName = "@BookId";
+      bookIdParameter.Value = bookId;
+      cmd.Parameters.Add(bookIdParameter);
+
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int foundCopyId = 0;
+      while(rdr.Read())
+      {
+        foundCopyId = rdr.GetInt32(0);
+      }
+
+      return foundCopyId;
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public void SetCopyId(int copyId)
+    {
+      _copyId = copyId;
+    }
+
     public void DoCheckout()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
 
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO `checkouts` (`patron_id`, `copy_id`, `date_checked`, `date_due`, `returned`) VALUES (@PatronId, @CopyId, @DateCheckout, @DateDue, @Returned);";
+      cmd.CommandText = @"INSERT INTO `checkouts` (`patron_id`, `copy_id`, `date_checked`, `date_due`, `returned`) VALUES (@PatronId, @CopyId, @DateCheckout, @DateDue, @CheckedOut);";
 
       MySqlParameter patronId = new MySqlParameter();
       patronId.ParameterName = "@PatronId";
@@ -62,10 +96,10 @@ namespace Library.Models
       dateDue.Value = this._dueDate;
       cmd.Parameters.Add(dateDue);
 
-      MySqlParameter returned = new MySqlParameter();
-      returned.ParameterName = "@Returned";
-      returned.Value = this._returned;
-      cmd.Parameters.Add(returned);
+      MySqlParameter checkedOut = new MySqlParameter();
+      checkedOut.ParameterName = "@CheckedOut";
+      checkedOut.Value = this._checkedOut;
+      cmd.Parameters.Add(checkedOut);
 
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
