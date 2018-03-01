@@ -18,9 +18,10 @@
     {
       <tr>
         <td>@checkout.GetBookName()</td>
-        <td>@checkout.GetCheckout()</td>
-        <td>@checkout.GetDueDate()</td>
+        <td>@checkout.GetCheckout().ToString("MM/dd/yyyy")</td>
+        <td>@checkout.GetDueDate().ToString("MM/dd/yyyy")</td>
       </tr>
     }
   </tbody>
 </table>
+<a href="/patrons">Go back to patrons</a>
