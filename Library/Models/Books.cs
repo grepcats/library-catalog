@@ -297,6 +297,27 @@ namespace Library.Models
 
     }
 
+    public void RemoveCopy()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM copies WHERE book_id = @BookId LIMIT 1;";
+
+      MySqlParameter book_id = new MySqlParameter();
+      book_id.ParameterName = "@BookId";
+      book_id.Value = this._id;
+      cmd.Parameters.Add(book_id);
+
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+       conn.Dispose();
+      }
+
+    }
+
     public int ReturnCount()
     {
       MySqlConnection conn = DB.Connection();

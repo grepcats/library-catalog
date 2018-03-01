@@ -100,5 +100,14 @@ namespace Library.Controllers
 
       return RedirectToAction("Index");
     }
+
+    [HttpGet("/books/{id}/burn")]
+    public ActionResult RemoveBookCopy(int id)
+    {
+      Book foundBook = Book.Find(id);
+      foundBook.RemoveCopy();
+
+      return RedirectToAction("Index");
+    }
   }
 }
